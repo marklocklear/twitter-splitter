@@ -5,7 +5,7 @@ class TwitterSplitter extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: 'Please write an essay about your favorite DOM element.',
+      value: '',
       count: 0
     };
 
@@ -18,32 +18,50 @@ class TwitterSplitter extends React.Component {
     })
   }
 
+  //delete paragraphs to update DOM
+  deletePTags() {
+    var p_list = document.getElementsByTagName("p");
+    for(var i=p_list.length-1; i>=0; i--){
+      var p = p_list[i];
+      p.parentNode.removeChild(p);
+    }
+  }
+
   handleChange(event) {
     this.setState({value: event.target.value});
-    let wordCount = this.state.value.length
-    if (wordCount > 150) {
-    	console.log("word count is: ", wordCount)
-    	this.setState((state) => {
-				return {value: "New p tag here"}
-			})
-      var root = document.getElementById('root')
-      var para = document.createElement("p");
-      var node = document.createTextNode(this.state.value);
-      para.appendChild(node);
-      root.appendChild(para);
+    let text = this.state.value
+    let characterCount = text.length
+    let chunkedText = text.match(/.{1,256}/g)
+	  let numParagraphs = Math.floor(characterCount/256) + 1
+
+    //delete p tags each timse an onChange event occurs
+    this.deletePTags() 
+
+    //create a paragraph for each 256 char chunk of text
+    if(numParagraphs){
+      for (var i in chunkedText) {
+        var root = document.getElementById('root')
+        var paragraph = document.createElement("p");
+        var node = document.createTextNode(Number(i) + 1 + '/' + chunkedText.length  + ' ' + chunkedText[i]);
+        paragraph.appendChild(node);
+        root.appendChild(paragraph); 
+      }
     }
   }
 
   render() {
     return (
       <div>
+    		<h1>Twitter Splitter</h1>
         <form>
           <label>
-            Text:
-            <textarea rows="14" cols="50" value={this.state.value} onChange={this.handleChange} />
+            <textarea
+              placeholder="Begin typing your tweet here..."
+              rows="14" cols="50" value={this.state.value}
+              onChange={this.handleChange}
+            />
           </label>
         </form>
-         <div>{this.state.value}</div>
       </div>
     );
   }
