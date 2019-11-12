@@ -28,24 +28,35 @@ class TwitterSplitter extends React.Component {
   }
 
   handleChange(event) {
+
+    let chunkedText = []
     this.setState({value: event.target.value});
-    let text = this.state.value
-    let characterCount = text.length
-    let chunkedText = text.match(/.{1,256}/g)
-	  let numParagraphs = Math.floor(characterCount/256) + 1
+    let text = event.target.value
+
+    while(text.length > 256) {
+      //get first 256 chars from text and find index of last period
+      let indexOfLastPeriod = text.substring(0,256).lastIndexOf('.')
+      //based on the index we got above get the text from 0 up to that index/number
+      let completeSentence = text.substring(0, indexOfLastPeriod + 1)
+      //add completeSentence to chunckedText array
+      chunkedText.push(completeSentence)
+      //remove completeSentence from text
+      text = text.slice(indexOfLastPeriod + 1)
+    }
+
+    //add the trailing text
+    chunkedText.push(text)
 
     //delete p tags each timse an onChange event occurs
     this.deletePTags() 
 
     //create a paragraph for each 256 char chunk of text
-    if(numParagraphs){
-      for (var i in chunkedText) {
-        var root = document.getElementById('root')
-        var paragraph = document.createElement("p");
-        var node = document.createTextNode(Number(i) + 1 + '/' + chunkedText.length  + ' ' + chunkedText[i]);
-        paragraph.appendChild(node);
-        root.appendChild(paragraph); 
-      }
+    for (var i in chunkedText) {
+      var root = document.getElementById('root')
+      var paragraph = document.createElement("p")
+      var node = document.createTextNode(Number(i) + 1 + '/' + chunkedText.length  + ' ' + chunkedText[i]);
+      paragraph.appendChild(node)
+      root.appendChild(paragraph)
     }
   }
 
