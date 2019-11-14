@@ -6,7 +6,8 @@ class TwitterSplitter extends React.Component {
     super(props);
     this.state = {
       value: '',
-      count: 0
+      count: 0,
+      length: 0
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -32,6 +33,12 @@ class TwitterSplitter extends React.Component {
     let chunkedText = []
     this.setState({value: event.target.value});
     let text = event.target.value
+
+    //set length to display total number of characters
+    this.setState({length: text.length});
+
+    //store the text in local storage with the key 'tweet'
+    window.localStorage.setItem('tweet', text);
 
     while(text.length > 256) {
       //get first 256 chars from text and find index of last period
@@ -60,6 +67,13 @@ class TwitterSplitter extends React.Component {
     }
   }
 
+  componentDidMount() {
+    //once the component loads check local storage and update the value if it exists
+    if(window.localStorage.getItem('tweet')) {
+      this.setState({value: window.localStorage.getItem('tweet')});
+    }
+  }
+
   render() {
     return (
       <div>
@@ -73,6 +87,7 @@ class TwitterSplitter extends React.Component {
             />
           </label>
         </form>
+        {this.state.length > 0 ? <span>{this.state.length} Chars || {this.state.count} Tweets</span> : ''}
       </div>
     );
   }
