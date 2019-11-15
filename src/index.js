@@ -32,6 +32,21 @@ class TwitterSplitter extends React.Component {
     this.handleText(event.target.value);
   }
 
+  findPunctuation(text) {
+    //get the first chunk of the text
+    let chunk = text.substring(0,256);
+
+    //get the last index of each type of punctuation and store them in an array
+    let indexes = [];
+    indexes.push(chunk.lastIndexOf('.'));
+    indexes.push(chunk.lastIndexOf('?'));
+    indexes.push(chunk.lastIndexOf('!'));
+
+    //Return the largest value (the last character) from the array
+    //The Spread operator (...) iterates through the array
+    return Math.max(...indexes);
+  }
+
   handleText(value) {
     let chunkedText = []
     this.setState({value: value});
@@ -45,7 +60,11 @@ class TwitterSplitter extends React.Component {
 
     while(text.length > 256) {
       //get first 256 chars from text and find index of last period
-      let indexOfLastPeriod = text.substring(0,256).lastIndexOf('.')
+      //let indexOfLastPeriod = text.substring(0,256).lastIndexOf('.')
+
+      //Changed to find the last index of . ! or ?
+      let indexOfLastPeriod = this.findPunctuation(text);
+
       //based on the index we got above get the text from 0 up to that index/number
       let completeSentence = text.substring(0, indexOfLastPeriod + 1)
       //add completeSentence to chunckedText array
@@ -56,6 +75,9 @@ class TwitterSplitter extends React.Component {
 
     //add the trailing text
     chunkedText.push(text)
+    
+    //Update the count for the number of tweets
+    this.setState({count: chunkedText.length});
 
     //delete p tags each timse an onChange event occurs
     this.deletePTags() 
