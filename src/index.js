@@ -29,10 +29,13 @@ class TwitterSplitter extends React.Component {
   }
 
   handleChange(event) {
+    this.handleText(event.target.value);
+  }
 
+  handleText(value) {
     let chunkedText = []
-    this.setState({value: event.target.value});
-    let text = event.target.value
+    this.setState({value: value});
+    let text = value
 
     //set length to display total number of characters
     this.setState({length: text.length});
@@ -69,8 +72,8 @@ class TwitterSplitter extends React.Component {
 
   componentDidMount() {
     //once the component loads check local storage and update the value if it exists
-    if(window.localStorage.getItem('tweet')) {
-      this.setState({value: window.localStorage.getItem('tweet')});
+    if (window.localStorage.getItem('tweet')) {
+        this.handleText(window.localStorage.getItem('tweet'))
     }
   }
 
