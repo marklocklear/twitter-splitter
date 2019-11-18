@@ -59,18 +59,15 @@ class TwitterSplitter extends React.Component {
     window.localStorage.setItem('tweet', text);
 
     while(text.length > 256) {
-      //get first 256 chars from text and find index of last period
-      //let indexOfLastPeriod = text.substring(0,256).lastIndexOf('.')
-
-      //Changed to find the last index of . ! or ?
-      let indexOfLastPeriod = this.findPunctuation(text);
+      //get first 256 chars from text and find index of last valid punctuation 
+      let indexOfLastPunctuation = this.findPunctuation(text);
 
       //based on the index we got above get the text from 0 up to that index/number
-      let completeSentence = text.substring(0, indexOfLastPeriod + 1)
+      let completeSentence = text.substring(0, indexOfLastPunctuation + 1)
       //add completeSentence to chunckedText array
       chunkedText.push(completeSentence)
       //remove completeSentence from text
-      text = text.slice(indexOfLastPeriod + 1)
+      text = text.slice(indexOfLastPunctuation + 1)
     }
 
     //add the trailing text
