@@ -1,0 +1,11 @@
+#root {
+    margin: auto 1rem;
+}
+
+.main-box {
+    flex: 1;
+}
+
+.paper {
+    padding: 1rem;
+}

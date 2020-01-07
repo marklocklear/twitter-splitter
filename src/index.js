@@ -1,5 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { 
+  Grid,
+  Paper,
+  Typography,
+  Button
+} from '@material-ui/core';
+import './App.css';
 
 class TwitterSplitter extends React.Component {
   constructor(props) {
@@ -7,10 +14,12 @@ class TwitterSplitter extends React.Component {
     this.state = {
       value: '',
       count: 0,
-      length: 0
+      length: 0,
+      theme: 'light'
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.swapTheme = this.swapTheme.bind(this);
   }
 
   resetCount = () => {
@@ -81,11 +90,19 @@ class TwitterSplitter extends React.Component {
 
     //create a paragraph for each 256 char chunk of text
     for (var i in chunkedText) {
-      var root = document.getElementById('root')
+      var root = document.getElementById('output')
       var paragraph = document.createElement("p")
       var node = document.createTextNode(Number(i) + 1 + '/' + chunkedText.length  + ' ' + chunkedText[i]);
       paragraph.appendChild(node)
       root.appendChild(paragraph)
+    }
+  }
+
+  swapTheme() {
+    if(this.state.theme == 'light') {
+      this.setState({theme: 'dark'});
+    } else {
+      this.setState({theme: 'light'});
     }
   }
 
@@ -99,17 +116,40 @@ class TwitterSplitter extends React.Component {
   render() {
     return (
       <div>
-    		<h1>Twitter Splitter</h1>
-        <form>
-          <label>
-            <textarea
-              placeholder="Begin typing your tweet here..."
-              rows="14" cols="50" value={this.state.value}
-              onChange={this.handleChange}
-            />
-          </label>
-        </form>
-        {this.state.length > 0 ? <span>{this.state.length} Chars || {this.state.count} Tweets</span> : ''}
+        <Grid item>
+          <Typography variant="caption" align="right">
+            <a href="https://github.com/marklocklear/twitter-splitter">Github</a>
+          </Typography>
+          <Button onClick={this.swapTheme}>Theme: {this.state.theme}</Button>
+        </Grid>
+        <Grid item>
+          <Typography variant="h2" component="h1" align="center">
+            Twitter Splitter
+          </Typography>
+        </Grid>
+        <Grid container spacing={2} justify="center" wrap="nowrap">
+          <Grid item className="main-box"> 
+            <Paper className="paper" square elevation={3}>
+              <form>
+                <label>
+                  <textarea
+                    placeholder="Begin typing your tweet here..."
+                    rows="14" cols="75" value={this.state.value}
+                    onChange={this.handleChange}
+                  />
+                </label>
+              </form>
+            </Paper>
+            
+            {this.state.length > 0 && 
+              <Typography variant="body1" align="center">
+                {this.state.length} Chars || {this.state.count} Tweets
+              </Typography>}
+          </Grid>
+          <Grid item className="main-box">
+            <Paper id="output" className="paper" square elevation={3} />
+          </Grid>
+        </Grid>
       </div>
     );
   }
