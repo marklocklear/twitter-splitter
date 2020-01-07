@@ -7,6 +7,7 @@ import {
   Button
 } from '@material-ui/core';
 import './App.css';
+import { lightTheme, darkTheme } from './Themes';
 
 class TwitterSplitter extends React.Component {
   constructor(props) {
@@ -15,7 +16,8 @@ class TwitterSplitter extends React.Component {
       value: '',
       count: 0,
       length: 0,
-      theme: 'light'
+      theme: 'light',
+      styles: lightTheme,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -100,9 +102,9 @@ class TwitterSplitter extends React.Component {
 
   swapTheme() {
     if(this.state.theme == 'light') {
-      this.setState({theme: 'dark'});
+      this.setState({theme: 'dark', styles: darkTheme});
     } else {
-      this.setState({theme: 'light'});
+      this.setState({theme: 'light', styles: lightTheme});
     }
   }
 
@@ -115,12 +117,12 @@ class TwitterSplitter extends React.Component {
 
   render() {
     return (
-      <div>
+      <div style={this.state.styles.body}>
         <Grid item>
           <Typography variant="caption" align="right">
             <a href="https://github.com/marklocklear/twitter-splitter">Github</a>
           </Typography>
-          <Button onClick={this.swapTheme}>Theme: {this.state.theme}</Button>
+          {/* <Button onClick={this.swapTheme} style={this.state.styles.button}>Theme: {this.state.theme}</Button> */}
         </Grid>
         <Grid item>
           <Typography variant="h2" component="h1" align="center">
@@ -129,7 +131,7 @@ class TwitterSplitter extends React.Component {
         </Grid>
         <Grid container spacing={2} justify="center" wrap="nowrap">
           <Grid item className="main-box"> 
-            <Paper className="paper" square elevation={3}>
+            <Paper className="paper" square elevation={3} style={this.state.styles.mainBox}>
               <form>
                 <label>
                   <textarea
@@ -147,7 +149,7 @@ class TwitterSplitter extends React.Component {
               </Typography>}
           </Grid>
           <Grid item className="main-box">
-            <Paper id="output" className="paper" square elevation={3} />
+            <Paper id="output" className="paper" square elevation={3} style={this.state.styles.mainBox} />
           </Grid>
         </Grid>
       </div>
