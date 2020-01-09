@@ -9,3 +9,11 @@
 .paper {
     padding: 1rem;
 }
+
+.github {
+	justify-content: left;
+}
+
+.twitter {
+	text-align: right;
+}
