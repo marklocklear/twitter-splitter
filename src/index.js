@@ -1,13 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { 
-  Grid,
-  Paper,
-  Typography,
-  Button
-} from '@material-ui/core';
+import { Grid, Paper, Typography, Button } from '@material-ui/core';
+import { TwitterShareButton } from 'react-twitter-embed';
 import './App.css';
 import { lightTheme, darkTheme } from './Themes';
+import github from './github.png'
+import logo from './logo.png'
 
 class TwitterSplitter extends React.Component {
   constructor(props) {
@@ -118,16 +116,36 @@ class TwitterSplitter extends React.Component {
   render() {
     return (
       <div style={this.state.styles.body}>
-        <Grid item>
-          <Typography variant="caption" align="right">
-            <a href="https://github.com/marklocklear/twitter-splitter">Github</a>
-          </Typography>
-          {/* <Button onClick={this.swapTheme} style={this.state.styles.button}>Theme: {this.state.theme}</Button> */}
-        </Grid>
-        <Grid item>
-          <Typography variant="h2" component="h1" align="center">
-            Twitter Splitter
-          </Typography>
+        <Grid container wrap="nowrap" align="center">
+          <Grid item className="github">
+            <a href="https://github.com/marklocklear/twitter-splitter" target="_blank">
+              <img src={github} alt="Github" width="50" height="50" />
+            </a>
+          </Grid>
+          <Grid item className="title"> 
+            <Typography variant="h2" component="h1" >
+              Twitter
+            </Typography>
+          </Grid>
+          <Grid item className="logo">
+            <img src={logo} alt="Logo" width="100" height="100" />
+          </Grid>
+          <Grid item className="title"> 
+            <Typography variant="h2" component="h1" >
+              Splitter
+            </Typography>
+          </Grid>
+          <Grid item className="twitter"> 
+          <div className="centerContent">
+            <div className="selfCenter">
+            <TwitterShareButton url="https://twittersplitter.com/" options={{
+                text: 'I just split my tweet with #twitterSplitter',
+                via: 'marklocklear',
+                size: 'large'
+              }} placeholder="Loading" />
+            </div>
+          </div>
+          </Grid>
         </Grid>
         <Grid container spacing={2} justify="center" wrap="nowrap">
           <Grid item className="main-box"> 
